@@ -231,7 +231,38 @@ main header .header-icons i {
 /* Finestra di conversazione */
 #conversation-window {
   height: 100%;
+  overflow-y: scroll;
   background-image: url(../img/mine.jpg);
+  padding: 30px 50px 10px 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+#conversation-window .white-balloon,
+#conversation-window .green-balloon {
+  padding: 15px 70px 15px 5px;
+  max-width: 50%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 7px;
+}
+
+.white-balloon {
+  background-color: #fff;
+  align-self: flex-start;
+}
+
+.green-balloon {
+  background-color: lightgreen;
+  align-self: flex-end;
+}
+
+#conversation-window .balloon-time {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  font-size: 10px;
+  color: grey;
 }
 /* fine finestra di conversazione */
 
@@ -246,6 +277,7 @@ main header .header-icons i {
 #typing-container .send {
   text-align: center;
   padding: 0 20px;
+  cursor: pointer;
 }
 
 #typing-container input {
