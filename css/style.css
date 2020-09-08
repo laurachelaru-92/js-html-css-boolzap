@@ -31,13 +31,16 @@ body {
 .pos-rel {
   position: relative;
 }
+
+.d-none {
+  display: none;
+}
 /* fine generiche */
 
 /* Contenuto pagina */
 #content-wrapper {
   width: 85%;
   height: 95%;
-  background-color: white;               /* Per debug */
 }
 
 /* Aside + Main */
@@ -79,16 +82,15 @@ aside header img {
   width: auto;
   border-radius: 50%;
   float: left;
-  vertical-align: middle;
 }
 
-aside .header-icons {
+aside header .header-icons {
   float: right;
   font-size: 18px;
   line-height: 60px;
 }
 
-aside .header-icons i {
+aside header .header-icons i {
   padding-right: 10px;
   color: #B1B1B1;
 }
@@ -136,7 +138,6 @@ aside .header-icons i {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  background-color: pink;               /* Per debug */
 }
 
 #contacts-container > .contact {
@@ -182,10 +183,78 @@ main {
   float: right;
   height: 100%;
   width: 60%;
-  background-color: red;               /* Per debug */
+  display: flex;
+  flex-direction: column;
 }
 
+main header,
+main #typing-container {
+  height: 60px;
+  flex-shrink: 0;
+}
 
+/* Header main */
+main header {
+  padding: 5px;
+}
+
+main header img {
+  height: 100%;
+  width: auto;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+#main-header-text {
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 10px;
+}
+
+#main-header-text p {
+  font-size: 13px;
+  color: #999999;
+}
+
+main header .header-icons {
+  float: right;
+  font-size: 18px;
+  line-height: 60px;
+}
+
+main header .header-icons i {
+  padding-right: 10px;
+  color: #B1B1B1;
+}
+/* fine header main */
+
+/* Finestra di conversazione */
+#conversation-window {
+  height: 100%;
+  background-image: url(../img/mine.jpg);
+}
+/* fine finestra di conversazione */
+
+/* Barra di digitazione */
+#typing-container {
+  background-color: #F3EEEA;
+  display: flex;
+  align-items: center;
+}
+
+#typing-container .fa-smile,
+#typing-container .send {
+  text-align: center;
+  padding: 0 20px;
+}
+
+#typing-container input {
+  width: 90%;
+  padding: 12px 10px;
+  border-radius: 7px;
+  border: none;
+}
+/* fine barra di digitazione */
 /* fine main */
 
 /* fine contenuto pagina */

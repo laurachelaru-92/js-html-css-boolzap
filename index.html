@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>Boolzap</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
   <body>
@@ -96,7 +96,35 @@
       <!-- / contenuto sinistra -->
       <!-- Contenuto destra/principale -->
       <main>
-        <header></header>
+        <!-- Header main -->
+        <header>
+          <img src="img/avatar_1.jpg" alt="foto profilo 1">
+          <div id="main-header-text">
+            <h4>Nome</h4>
+            <p id="last-access">Ultimo accesso alle 12:47
+
+            </p>
+          </div>
+          <div class="header-icons">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-paperclip"></i>
+            <i class="fas fa-ellipsis-v"></i>
+          </div>
+        </header>
+        <!-- / header main -->
+        <!-- Finestra di conversazione -->
+        <div id="conversation-window"></div>
+        <!-- / finestra di conversazione -->
+        <!-- Barra di digitazione -->
+        <div id="typing-container">
+          <i class="far fa-smile"></i>
+          <input type="text" placeholder="Scrivi un messaggio">
+          <div class="send">
+            <i class="fas fa-paper-plane d-none"></i>
+            <i class="fas fa-microphone"></i>            
+          </div>
+        </div>
+        <!-- / barra di digitazione -->
       </main>
       <!-- / contenuto destra/principale -->
     </div>
