@@ -1,0 +1,92 @@
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+/* Generiche  */
+body {
+  height: 100vh;
+  width: 100%;
+}
+
+#body-background {
+  height: 100%;
+  background-color: #DBDBD2;
+}
+
+#body-background .blue-stripe {
+  height: 20%;
+  background-color: #009688;
+}
+/* fine generiche */
+
+/* Contenuto pagina */
+#content-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  height: 95%;
+  background-color: white;               /* Per debug */
+}
+
+/* Aside + Main */
+aside header,
+main header {
+  height: 70px;
+  width: 100%;
+  background-color: #EAEAEA;
+}
+
+aside header {
+  border-right: 1px solid #DBDBD2;
+}
+/* fine aside + main */
+
+/* Aside */
+aside {
+  float: left;
+  height: 100%;
+  width: 40%;
+  background-color: blue;               /* Per debug */
+  display: flex;
+  flex-direction: column;
+}
+
+#notifications {
+  height: 75px;
+  background-color: #8EDAFC;
+}
+
+#search {
+  height: 40px;
+  background-color: #FAFAFA;
+}
+
+aside header,
+#notifications,
+#search {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+#contacts-container {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  background-color: pink;               /* Per debug */
+}
+/* fine aside */
+
+/* Main */
+main {
+  float: right;
+  height: 100%;
+  width: 60%;
+  background-color: red;               /* Per debug */
+}
+/* fine main */
+
+/* fine contenuto pagina */
