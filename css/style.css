@@ -8,6 +8,7 @@ padding: 0;
 body {
   height: 100vh;
   width: 100%;
+  font-family: "Roboto", sans-serif;
 }
 
 #body-background {
@@ -19,14 +20,21 @@ body {
   height: 20%;
   background-color: #009688;
 }
-/* fine generiche */
 
-/* Contenuto pagina */
-#content-wrapper {
+.abs-centr {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.pos-rel {
+  position: relative;
+}
+/* fine generiche */
+
+/* Contenuto pagina */
+#content-wrapper {
   width: 85%;
   height: 95%;
   background-color: white;               /* Per debug */
@@ -35,7 +43,7 @@ body {
 /* Aside + Main */
 aside header,
 main header {
-  height: 70px;
+  height: 60px;
   width: 100%;
   background-color: #EAEAEA;
 }
@@ -50,19 +58,8 @@ aside {
   float: left;
   height: 100%;
   width: 40%;
-  background-color: blue;               /* Per debug */
   display: flex;
   flex-direction: column;
-}
-
-#notifications {
-  height: 75px;
-  background-color: #8EDAFC;
-}
-
-#search {
-  height: 40px;
-  background-color: #FAFAFA;
 }
 
 aside header,
@@ -72,12 +69,112 @@ aside header,
   flex-shrink: 0;
 }
 
+/* Header aside */
+aside header {
+  padding: 5px;
+}
+
+aside header img {
+  height: 100%;
+  width: auto;
+  border-radius: 50%;
+  float: left;
+  vertical-align: middle;
+}
+
+aside .header-icons {
+  float: right;
+  font-size: 18px;
+  line-height: 60px;
+}
+
+aside .header-icons i {
+  padding-right: 10px;
+  color: #B1B1B1;
+}
+/* fine header aside */
+
+/* Notifiche */
+#notifications {
+  height: 65px;
+  background-color: #8EDAFC;
+  padding: 10px 5px 10px 15px;
+}
+
+#notifications .fa-bell-slash {
+  height: 45px;
+  width: 45px;
+  background-color: #fff;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #8EDAFC;
+  line-height: 45px;
+  text-align: center;
+}
+
+#notifications-text {
+  display: inline-block;
+  padding-left: 10px;
+  vertical-align: middle;
+}
+
+#notifications-text p {
+  font-size: 13px;
+  color: #b3b3b3;
+  text-decoration: underline;
+}
+/* fine notifiche */
+
+#search {
+  height: 40px;
+  background-color: #FAFAFA;
+}
+
+
+/* Contenitore contatti */
 #contacts-container {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
   background-color: pink;               /* Per debug */
 }
+
+#contacts-container > .contact {
+  width: 100%;
+  height: 65px;
+  background-color: #fff;
+  border-bottom: 1px solid #f2f2f2;
+  padding: 5px 5px 5px 10px;
+}
+
+.contact img {
+  height: 100%;
+  width: auto;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.contact-text {
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 10px;
+}
+
+.contact-text p {
+  color: #d9d9d9;
+  font-size: 13px;
+  margin-top: 3px;
+}
+
+.last-message-time {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  color: #f2f2f2;
+  font-size: 12px;
+}
+/* fine contenitore contatti */
+
 /* fine aside */
 
 /* Main */
@@ -87,6 +184,8 @@ main {
   width: 60%;
   background-color: red;               /* Per debug */
 }
+
+
 /* fine main */
 
 /* fine contenuto pagina */
