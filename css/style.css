@@ -231,11 +231,11 @@ main header .header-icons i {
 /* Finestra di conversazione */
 #conversation-window {
   height: 100%;
-  overflow-y: scroll;
   background-image: url(../img/mine.jpg);
   padding: 30px 50px 10px 50px;
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
 }
 
 #conversation-window .white-balloon,
@@ -286,6 +286,7 @@ main header .header-icons i {
   border-radius: 7px;
   border: none;
 }
+
 /* fine barra di digitazione */
 /* fine main */
 
