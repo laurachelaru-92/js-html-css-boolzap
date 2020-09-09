@@ -87,7 +87,7 @@ aside header img {
 aside header .header-icons {
   float: right;
   font-size: 18px;
-  line-height: 60px;
+  line-height: 50px;
 }
 
 aside header .header-icons i {
@@ -127,11 +127,43 @@ aside header .header-icons i {
 }
 /* fine notifiche */
 
+/* Cerca */
 #search {
   height: 40px;
   background-color: #FAFAFA;
+  padding: 5px;
 }
 
+#search > .search-container {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#search > .search-container > i.fa-search {
+  height: 100%;
+  padding: 0 20px;
+  background-color: #fff;
+  color: #000;
+  border-right: 1px solid #d9d9d9;
+  flex-shrink: 0;
+  text-align: center;
+  line-height: 30px;
+}
+
+#search > .search-container > input {
+  margin-left: 3%;
+  width: 97%;
+  padding: 3px;
+  border-radius: 5px;
+  border: none;
+}
+/* fine cerca */
 
 /* Contenitore contatti */
 #contacts-container {
@@ -146,6 +178,7 @@ aside header .header-icons i {
   background-color: #fff;
   border-bottom: 1px solid #f2f2f2;
   padding: 5px 5px 5px 10px;
+  cursor: pointer;
 }
 
 .contact img {
@@ -162,7 +195,7 @@ aside header .header-icons i {
 }
 
 .contact-text p {
-  color: #d9d9d9;
+  color: #b3b3b3;
   font-size: 13px;
   margin-top: 3px;
 }
@@ -171,8 +204,12 @@ aside header .header-icons i {
   position: absolute;
   top: 10px;
   right: 5px;
-  color: #f2f2f2;
+  color: #b3b3b3;
   font-size: 12px;
+}
+
+#contacts-container > .contact:hover {
+  background-color: #d9d9d9;
 }
 /* fine contenitore contatti */
 
@@ -219,7 +256,7 @@ main header img {
 main header .header-icons {
   float: right;
   font-size: 18px;
-  line-height: 60px;
+  line-height: 50px;
 }
 
 main header .header-icons i {

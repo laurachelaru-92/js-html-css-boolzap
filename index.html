@@ -39,27 +39,51 @@
         <!-- / div notifiche -->
         <!-- Cerca -->
         <div id="search">
+          <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Cerca o inizia una nuova chat">
+          </div>
         </div>
         <!-- / cerca -->
         <!-- Contenitore contatti -->
         <div id="contacts-container">
-          <div class="contact pos-rel">
+          <div class="contact pos-rel" id="michele">
             <img src="img/avatar_1.jpg" alt="foto profilo michele">
             <div class="contact-text">
               <h4 class="contact-name">Michele</h4>
               <p class="last-message">Non poteva essere altrimenti</p>
             </div>
             <span class="last-message-time">17:53</span>
+            <div class="balloons d-none">
+              <div class="white-balloon pos-rel">
+                <p>Ehi! Tutto ok?</p>
+                <span class="balloon-time">13:25</span>
+              </div>
+              <div class="green-balloon pos-rel">
+                <p>Non c'è male.. e tu?</p>
+                <span class="balloon-time">14:01</span>
+              </div>
+            </div>
           </div>
-          <div class="contact pos-rel">
+          <div class="contact pos-rel" id="fabio">
             <img src="img/avatar_2.jpg" alt="foto profilo fabio">
             <div class="contact-text">
               <h4 class="contact-name">Fabio</h4>
               <p class="last-message">Non poteva essere altrimenti</p>
             </div>
             <span class="last-message-time">17:53</span>
+            <div class="balloons d-none">
+              <div class="white-balloon pos-rel">
+                <p>Come ti sta andando la giornata?</p>
+                <span class="balloon-time">13:25</span>
+              </div>
+              <div class="green-balloon pos-rel">
+                <p>Benissimo!</p>
+                <span class="balloon-time">14:01</span>
+              </div>
+            </div>
           </div>
-          <div class="contact pos-rel">
+          <div class="contact pos-rel" id="samuele">
             <img src="img/avatar_3.jpg" alt="foto profilo samuele">
             <div class="contact-text">
               <h4 class="contact-name">Samuele</h4>
@@ -67,7 +91,7 @@
             </div>
             <span class="last-message-time">17:53</span>
           </div>
-          <div class="contact pos-rel">
+          <div class="contact pos-rel" id="alessandroB">
             <img src="img/avatar_4.jpg" alt="foto profilo alessandro b">
             <div class="contact-text">
               <h4 class="contact-name">Alessandro B.</h4>
@@ -75,7 +99,7 @@
             </div>
             <span class="last-message-time">17:53</span>
           </div>
-          <div class="contact pos-rel">
+          <div class="contact pos-rel" id="alessandroL">
             <img src="img/avatar_5.jpg" alt="foto profilo alessandro l">
             <div class="contact-text">
               <h4 class="contact-name">Alessandro L.</h4>
@@ -83,7 +107,7 @@
             </div>
             <span class="last-message-time">17:53</span>
           </div>
-          <div class="contact pos-rel">
+          <div class="contact pos-rel" id="claudia">
             <img src="img/avatar_6.jpg" alt="foto profilo claudia">
             <div class="contact-text">
               <h4 class="contact-name">Claudia</h4>
@@ -91,7 +115,7 @@
             </div>
             <span class="last-message-time">17:53</span>
           </div>
-          <div class="contact pos-rel">
+          <div class="contact pos-rel" id="davide">
             <img src="img/avatar_7.jpg" alt="foto profilo davide">
             <div class="contact-text">
               <h4 class="contact-name">Davide</h4>
@@ -99,7 +123,7 @@
             </div>
             <span class="last-message-time">17:53</span>
           </div>
-          <div class="contact pos-rel">
+          <div class="contact pos-rel" id="federico">
             <img src="img/avatar_8.jpg" alt="foto profilo federico">
             <div class="contact-text">
               <h4 class="contact-name">Federico</h4>
@@ -107,7 +131,6 @@
             </div>
             <span class="last-message-time">17:53</span>
           </div>
-
         </div>
         <!-- / contenitore contatti -->
       </aside>
@@ -119,7 +142,7 @@
           <img src="img/avatar_1.jpg" alt="foto profilo 1">
           <div id="main-header-text">
             <h4>Michele</h4>
-            <p id="last-access">Ultimo accesso alle <span>12:47</span></p>
+            <p id="last-access">Ultimo accesso alle 12:47</p>
           </div>
           <div class="header-icons">
             <i class="fas fa-search"></i>
