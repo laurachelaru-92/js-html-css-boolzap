@@ -236,11 +236,12 @@ main header .header-icons i {
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+  justify-content: flex-end;
 }
 
 #conversation-window .white-balloon,
 #conversation-window .green-balloon {
-  padding: 15px 70px 15px 5px;
+  padding: 15px 40px 15px 8px;
   max-width: 50%;
   height: auto;
   margin-bottom: 10px;
@@ -287,6 +288,9 @@ main header .header-icons i {
   border: none;
 }
 
+#typing-container input:focus {
+  border: 2px solid #000;
+}
 /* fine barra di digitazione */
 /* fine main */
 
