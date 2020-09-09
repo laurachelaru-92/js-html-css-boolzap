@@ -119,9 +119,21 @@ function sortare(arrayGenerico,inputGenerico) {
   }
   return arrayGiusto;
 }
-var inputto = "au";
-console.log(sortare(arrayContatti,inputto));
 
-
+// Al change dell'input, sortiamo la lista contatti
+$("#search input").change(
+  function() {
+    var inputValue = $("#search input").val();
+    var arrayContattiTrovati = sortare(arrayContatti,inputValue);
+    // Iteriamo nel nostro contenitore di contatti
+    $("#contacts-container .contact").each(
+      function() {
+        if(!arrayContattiTrovati.includes($(this).find("h4").text())) {
+          $(this).remove();
+        }
+      }
+    );
+  }
+);
 
 });
