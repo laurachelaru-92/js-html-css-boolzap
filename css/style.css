@@ -279,8 +279,9 @@ main header .header-icons i {
 
 #conversation-window .white-balloon,
 #conversation-window .green-balloon {
-  padding: 15px 40px 15px 8px;
-  max-width: 50%;
+  padding: 15px 35px 15px 8px;
+  width: 50%;
+  word-break: break-all;
   height: auto;
   margin-bottom: 10px;
   border-radius: 7px;

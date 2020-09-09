@@ -89,26 +89,33 @@ function ultimoAccesso() {
 $("#contacts-container .contact").click(
   function() {
     var nomeContatto = $(this).find("h4").text();
+    // Se il contatto non è già quello presente in finestra...
     if($("#main-header-text h4").text() != nomeContatto) {
+      // Cambia il nome nell'header
       $("#main-header-text h4").text(nomeContatto);
-      $("#conversation-window").empty();
+      // Cambia l'immagine del profilo
+      var immagineProfilo = $(this).children("img").attr("src");
+      $("main header img").attr("src", immagineProfilo);
+      // Si svuota la finestra dai messaggi
+      $("#conversation-window").children(".white-balloon, .green-balloon").remove();
+      // Vengono inseriti in finestra i balloons del contatto selezionato
       var balloonsAttuali = $(this).find(".balloons").html();
       $("#conversation-window").append(balloonsAttuali);
     }
   }
 );
 
-
 // Mettiamo i contatti in un array
 var arrayContatti = [];
 $("#contacts-container > .contact").each(
   function() {
-    arrayContatti.push($(this).find(".contact-name").text());
+    var contatto = $(this).find(".contact-name").text();
+    arrayContatti.push(contatto.toLowerCase());
   }
 );
 console.log(arrayContatti);
 
-// Definiamo una funzione che riordina in base a un input
+// Definiamo una funzione che "riordina" in base a un input
 function sortare(arrayGenerico,inputGenerico) {
   var arrayGiusto = [];
   for(var i = 0; i < arrayGenerico.length; i++) {
@@ -120,16 +127,23 @@ function sortare(arrayGenerico,inputGenerico) {
   return arrayGiusto;
 }
 
-// Al change dell'input, sortiamo la lista contatti
-$("#search input").change(
+// Quando scriviamo nell'input, sortiamo la lista contatti
+$("#search input").keyup(
   function() {
-    var inputValue = $("#search input").val();
+    // Viene letto il valore dell'input, reso minuscolo e messo in una variabile
+    var inputValue = $("#search input").val().toLowerCase();
+    // Viene creato un array dei contatti che contengono l'input
     var arrayContattiTrovati = sortare(arrayContatti,inputValue);
     // Iteriamo nel nostro contenitore di contatti
     $("#contacts-container .contact").each(
       function() {
-        if(!arrayContattiTrovati.includes($(this).find("h4").text())) {
-          $(this).remove();
+        // Se l'array appena creato non contiene uno dei nomi dei contatti...
+        if(!arrayContattiTrovati.includes($(this).find(".contact-name").text().toLowerCase())) {
+          // ..rimuoverlo
+          $(this).addClass("d-none");
+        } else {
+          // ..altrimenti, renderlo visibile
+          $(this).removeClass("d-none");
         }
       }
     );
