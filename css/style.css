@@ -272,6 +272,7 @@ main header .header-icons i {
 /* Finestra di conversazione */
 #conversation-window {
   height: 100%;
+  overflow-y: scroll;
 }
 
 .balloons {
@@ -280,7 +281,6 @@ main header .header-icons i {
   padding: 30px 50px 10px 50px;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
   justify-content: flex-start;
 }
 
@@ -291,7 +291,7 @@ main header .header-icons i {
 #conversation-window .white-balloon,
 #conversation-window .green-balloon {
   padding: 15px 35px 15px 8px;
-  width: 50%;
+  max-width: 50%;
   word-break: break-all;
   height: auto;
   margin-bottom: 10px;
@@ -315,6 +315,46 @@ main header .header-icons i {
   font-size: 10px;
   color: grey;
 }
+/* Opzioni messaggio */
+.white-balloon .fa-chevron-down,
+.green-balloon .fa-chevron-down {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.white-balloon:hover .fa-chevron-down,
+.green-balloon:hover .fa-chevron-down {
+  display: inline-block !important;
+}
+
+.white-balloon ul,
+.green-balloon ul {
+  list-style: none;
+  position: absolute;
+  background-color: #F3EEEA;
+  top: 35px;
+  left: 0;
+  min-width: 100%;
+  white-space: nowrap;
+  font-size: 13px;
+  text-align: center;
+  z-index: 1;
+}
+
+.white-balloon ul li,
+.green-balloon ul li {
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.white-balloon ul li:hover,
+.green-balloon ul li:hover {
+  background-color: #e3d8ce;
+}
+/* fine opzioni messaggio */
 /* fine finestra di conversazione */
 
 /* Barra di digitazione */

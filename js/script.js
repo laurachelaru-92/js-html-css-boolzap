@@ -1,7 +1,6 @@
 $(document).ready(function(){
 
 // Al caricamento della pagina, è attivo il primo contatto della nostra lista
-// $("#contacts-container .contact:first-child").addClass("active");
 showActive($("#contacts-container .contact:first-child"));
 
 // Definiamo una funzione che mostra in pagina il contatto attivo
@@ -17,13 +16,28 @@ function showActive(contact) {
   $("main header img").attr("src",immagineProfilo);
   // Il contatto attivo è quello la cui conversazione è visibile
   var datoAttivo = contattoAttivo.attr("data-contact");
-  console.log(datoAttivo);
   var chatAttiva = $("#conversation-window .balloons[data-chat="+datoAttivo+"]");
   chatAttiva.removeClass("d-none");
   chatAttiva.addClass("active");
   // Rimuoviamo le chat degli altri contatti
   $("#conversation-window .balloons").not(chatAttiva).addClass("d-none");
 }
+
+// NUOVO MESSAGGIO //
+// Al focus sull'input, sparisce il microphono e appare l'aeroplanino
+$("#typing-container input").focus(
+  function() {
+    $(".send i.fa-paper-plane").removeClass("d-none");
+    $(".send i.fa-microphone").addClass("d-none");
+  }
+);
+// Al focusout, succede il contrario
+$("#typing-container input").focusout(
+  function() {
+    $(".send i.fa-paper-plane").addClass("d-none");
+    $(".send i.fa-microphone").removeClass("d-none");
+  }
+);
 
 // Al click su "send"...
 $("#typing-container .send").click(
@@ -53,14 +67,6 @@ $("#typing-container").keypress(
     }
   })
 
-// Funzione per ore e minuti minori di 10
-function addZero(i) {
-  if (i < 10) {
-    i = "0" + i;
-  }
-  return i;
-}
-
 // Creiamo la funzione che crea un nuovo balloon verde
 function newGreenBalloon() {
   // Cloniamo il templace con balloon verde
@@ -73,7 +79,7 @@ function newGreenBalloon() {
     balloonVerde.children("p").text(messaggio);
     // Segniamo l'ora attuale nello span apposito
     var d = new Date();
-    balloonVerde.children("span").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
+    balloonVerde.find(".balloon-time").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
     // Appendiamo il balloon nella finestra di conversazione
     $("#conversation-window .balloons.active").append(balloonVerde);
     // Puliamo il valore di input
@@ -81,21 +87,7 @@ function newGreenBalloon() {
   }
 }
 
-// Al focus sull'input, sparisce il microphono e appare l'aeroplanino
-$("#typing-container input").focus(
-  function() {
-    $(".send i.fa-paper-plane").removeClass("d-none");
-    $(".send i.fa-microphone").addClass("d-none");
-  }
-);
-// Al focusout, succede il contrario
-$("#typing-container input").focusout(
-  function() {
-    $(".send i.fa-paper-plane").addClass("d-none");
-    $(".send i.fa-microphone").removeClass("d-none");
-  }
-);
-
+// RISPOSTA //
 // Creiamo la funzione che indica che l'altra persona sta scrivendo
 function staScrivendo() {
   $("main header #last-access").text("sta scrivendo...");
@@ -106,8 +98,16 @@ function risposta() {
   var balloonBianco = $(".template-white .white-balloon").clone();
   balloonBianco.children("p").text("ok");
   var d = new Date();
-  balloonBianco.children("span").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
+  balloonBianco.find(".balloon-time").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
   $("#conversation-window .balloons.active").append(balloonBianco);
+}
+
+// Funzione per ore e minuti minori di 10
+function addZero(i) {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
 }
 
 // Creiamo la funzione che cambia il testo nell'header in "ultimo accesso"
@@ -117,16 +117,19 @@ function ultimoAccesso() {
   $("#contacts-container .contact.active .last-message-time").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
 }
 
+// CAMBIO CONTATTO
 // Al click su un figlio di "contacts-container", cambia il contenuto della Finestra
 $("#contacts-container .contact").click(
   function() {
     // Viene visualizzato come attivo il contatto cliccato
     $("#contacts-container .contact").removeClass("active");
+    $("#conversation-window .balloons").removeClass("active");
     showActive($(this));
   }
 );
 
 
+// CERCA TRA I CONTATTI //
 // Mettiamo i contatti in un array
 var arrayContatti = [];
 $("#contacts-container > .contact").each(
@@ -135,7 +138,6 @@ $("#contacts-container > .contact").each(
     arrayContatti.push(contatto.toLowerCase());
   }
 );
-console.log(arrayContatti);
 
 // Definiamo una funzione che "riordina" in base a un input
 function sortare(arrayGenerico,inputGenerico) {
@@ -171,5 +173,21 @@ $("#search input").keyup(
     );
   }
 );
+
+
+// ELIMINARE UN MESSAGGIO
+// Al click sulla freccia del messaggio, questo mostra il menu
+$(".white-balloon .fa-chevron-down, .green-balloon .fa-chevron-down").click(
+  function() {
+    var menuMessaggio = $(this).parent("span").children("ul");
+    menuMessaggio.toggleClass("d-none");
+    $(menuMessaggio).children(".delete").click(
+      function() {
+        $(this).parents(".pos-rel").remove();
+      }
+    );
+  }
+);
+
 
 });
