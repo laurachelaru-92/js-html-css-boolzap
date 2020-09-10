@@ -179,11 +179,15 @@ aside header .header-icons i {
   border-bottom: 1px solid #f2f2f2;
   padding: 5px 5px 5px 10px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  overflow-x: hidden;
 }
 
 .contact img {
   height: 100%;
   width: auto;
+  flex-shrink: 0;
   border-radius: 50%;
   vertical-align: middle;
 }
@@ -192,6 +196,9 @@ aside header .header-icons i {
   display: inline-block;
   vertical-align: middle;
   padding-left: 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .contact-text p {
@@ -214,6 +221,10 @@ aside header .header-icons i {
 
 #contacts-container .contact.active {
   background-color: #d9d9d9;
+}
+
+#contacts-container .contact.d-none {
+  display: none !important;
 }
 /* fine contenitore contatti */
 
@@ -292,10 +303,11 @@ main header .header-icons i {
 #conversation-window .green-balloon {
   padding: 15px 35px 15px 8px;
   max-width: 50%;
-  word-break: break-all;
   height: auto;
   margin-bottom: 10px;
   border-radius: 7px;
+  word-break: break-all;
+  text-overflow: ellipsis;
 }
 
 .white-balloon {

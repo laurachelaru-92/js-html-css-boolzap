@@ -3,6 +3,18 @@ $(document).ready(function(){
 // Al caricamento della pagina, è attivo il primo contatto della nostra lista
 showActive($("#contacts-container .contact:first-child"));
 
+// Nella parte sinistra, sotto il nome del contatto, appare il testo dell'ultimo messaggio
+$("#contacts-container .contact").each(
+  function() {
+    var datoAttivo = $(this).attr("data-contact");
+    var chatAttiva = $("#conversation-window .balloons[data-chat="+datoAttivo+"]");
+    var ultimoMessaggio = chatAttiva.find(".pos-rel:last-of-type p").text();
+    var ultimoAccesso = chatAttiva.find(".pos-rel:last-of-type .balloon-time").text();
+    $(this).find(".last-message-time").text(ultimoAccesso);
+    $(this).find(".last-message").text(ultimoMessaggio);
+  }
+);
+
 // Definiamo una funzione che mostra in pagina il contatto attivo
 function showActive(contact) {
   contact.addClass("active");
@@ -77,6 +89,8 @@ function newGreenBalloon() {
   if(messaggio != "") {
     // Appendiamo il messaggio nel paragrafo del balloon verde
     balloonVerde.children("p").text(messaggio);
+    // Appendiamo il messaggio anche nella finestra a sinistra
+    $("#contacts-container .contact.active").find(".last-message").text(messaggio);
     // Segniamo l'ora attuale nello span apposito
     var d = new Date();
     balloonVerde.find(".balloon-time").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
@@ -97,6 +111,7 @@ function staScrivendo() {
 function risposta() {
   var balloonBianco = $(".template-white .white-balloon").clone();
   balloonBianco.children("p").text("ok");
+  $("#contacts-container .contact.active").find(".last-message").text("ok");
   var d = new Date();
   balloonBianco.find(".balloon-time").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
   $("#conversation-window .balloons.active").append(balloonBianco);
@@ -138,6 +153,7 @@ $("#contacts-container > .contact").each(
     arrayContatti.push(contatto.toLowerCase());
   }
 );
+console.log(arrayContatti);
 
 // Definiamo una funzione che "riordina" in base a un input
 function sortare(arrayGenerico,inputGenerico) {
@@ -155,9 +171,10 @@ function sortare(arrayGenerico,inputGenerico) {
 $("#search input").keyup(
   function() {
     // Viene letto il valore dell'input, reso minuscolo e messo in una variabile
-    var inputValue = $("#search input").val().toLowerCase();
+    var searchValue = $("#search input").val().toLowerCase();
     // Viene creato un array dei contatti che contengono l'input
-    var arrayContattiTrovati = sortare(arrayContatti,inputValue);
+    var arrayContattiTrovati = sortare(arrayContatti,searchValue);
+    console.log(arrayContattiTrovati);
     // Iteriamo nel nostro contenitore di contatti
     $("#contacts-container .contact").each(
       function() {
@@ -176,18 +193,19 @@ $("#search input").keyup(
 
 
 // ELIMINARE UN MESSAGGIO
-// Al click sulla freccia del messaggio, questo mostra il menu
-$(".white-balloon .fa-chevron-down, .green-balloon .fa-chevron-down").click(
-  function() {
-    var menuMessaggio = $(this).parent("span").children("ul");
-    menuMessaggio.toggleClass("d-none");
-    $(menuMessaggio).children(".delete").click(
-      function() {
-        $(this).parents(".pos-rel").remove();
-      }
-    );
-  }
+// Al click sulla freccia del messaggio, questo mostra il menu e al click su "cancella messaggio" lo cancella
+$(document).on("click", ".white-balloon .fa-chevron-down, .green-balloon .fa-chevron-down",
+function() {
+  var menuMessaggio = $(this).parent("span").children("ul");
+  menuMessaggio.toggleClass("d-none");
+  $(menuMessaggio).children(".delete").click(
+    function() {
+      $(this).parents(".pos-rel").remove();
+    }
+  );
+}
 );
+
 
 
 });
