@@ -1,5 +1,30 @@
 $(document).ready(function(){
 
+// Al caricamento della pagina, è attivo il primo contatto della nostra lista
+// $("#contacts-container .contact:first-child").addClass("active");
+showActive($("#contacts-container .contact:first-child"));
+
+// Definiamo una funzione che mostra in pagina il contatto attivo
+function showActive(contact) {
+  contact.addClass("active");
+  var contattoAttivo = $("#contacts-container .contact.active");
+  $("#main-header-text h4").text(contattoAttivo.find(".contact-name").text());
+  // L'ultimo accesso in main header è quello del contatto attivo
+  var accessoAttivo = contattoAttivo.find(".last-message-time").text();
+  $("#main-header-text #last-access").text("Ultimo accesso alle " + accessoAttivo);
+  // La foto profilo è quella del contatto attivo
+  var immagineProfilo = contattoAttivo.find("img").attr("src");
+  $("main header img").attr("src",immagineProfilo);
+  // Il contatto attivo è quello la cui conversazione è visibile
+  var datoAttivo = contattoAttivo.attr("data-contact");
+  console.log(datoAttivo);
+  var chatAttiva = $("#conversation-window .balloons[data-chat="+datoAttivo+"]");
+  chatAttiva.removeClass("d-none");
+  chatAttiva.addClass("active");
+  // Rimuoviamo le chat degli altri contatti
+  $("#conversation-window .balloons").not(chatAttiva).addClass("d-none");
+}
+
 // Al click su "send"...
 $("#typing-container .send").click(
   function() {
@@ -26,8 +51,15 @@ $("#typing-container").keypress(
       // Segniamo l'ultimo accesso nell'header
       setTimeout(ultimoAccesso, 1800);
     }
+  })
+
+// Funzione per ore e minuti minori di 10
+function addZero(i) {
+  if (i < 10) {
+    i = "0" + i;
   }
-);
+  return i;
+}
 
 // Creiamo la funzione che crea un nuovo balloon verde
 function newGreenBalloon() {
@@ -40,10 +72,10 @@ function newGreenBalloon() {
     // Appendiamo il messaggio nel paragrafo del balloon verde
     balloonVerde.children("p").text(messaggio);
     // Segniamo l'ora attuale nello span apposito
-    var currentTime = new Date();
-    balloonVerde.children("span").text(currentTime.getHours() + ":" + currentTime.getMinutes());
-    // Appendiamo il balloon verde nella finestra di conversazione
-    $("#conversation-window").append(balloonVerde);
+    var d = new Date();
+    balloonVerde.children("span").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
+    // Appendiamo il balloon nella finestra di conversazione
+    $("#conversation-window .balloons.active").append(balloonVerde);
     // Puliamo il valore di input
     $("#typing-container input").val("");
   }
@@ -73,37 +105,27 @@ function staScrivendo() {
 function risposta() {
   var balloonBianco = $(".template-white .white-balloon").clone();
   balloonBianco.children("p").text("ok");
-  var currentTime = new Date();
-  balloonBianco.children("span").text(currentTime.getHours() + ":" + currentTime.getMinutes());
-  $("#conversation-window").append(balloonBianco);
+  var d = new Date();
+  balloonBianco.children("span").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
+  $("#conversation-window .balloons.active").append(balloonBianco);
 }
 
 // Creiamo la funzione che cambia il testo nell'header in "ultimo accesso"
 function ultimoAccesso() {
-  var currentTime = new Date();
-  $("main header #last-access").text("Ultimo accesso alle " + currentTime.getHours() + ":" + currentTime.getMinutes());
-  $("#contacts-container .last-message-time").text(currentTime.getHours() + ":" + currentTime.getMinutes());
+  var d = new Date();
+  $("main header #last-access").text("Ultimo accesso alle " + addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
+  $("#contacts-container .contact.active .last-message-time").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
 }
 
 // Al click su un figlio di "contacts-container", cambia il contenuto della Finestra
 $("#contacts-container .contact").click(
   function() {
-    var nomeContatto = $(this).find("h4").text();
-    // Se il contatto non è già quello presente in finestra...
-    if($("#main-header-text h4").text() != nomeContatto) {
-      // Cambia il nome nell'header
-      $("#main-header-text h4").text(nomeContatto);
-      // Cambia l'immagine del profilo
-      var immagineProfilo = $(this).children("img").attr("src");
-      $("main header img").attr("src", immagineProfilo);
-      // Si svuota la finestra dai messaggi
-      $("#conversation-window").children(".white-balloon, .green-balloon").remove();
-      // Vengono inseriti in finestra i balloons del contatto selezionato
-      var balloonsAttuali = $(this).find(".balloons").html();
-      $("#conversation-window").append(balloonsAttuali);
-    }
+    // Viene visualizzato come attivo il contatto cliccato
+    $("#contacts-container .contact").removeClass("active");
+    showActive($(this));
   }
 );
+
 
 // Mettiamo i contatti in un array
 var arrayContatti = [];
