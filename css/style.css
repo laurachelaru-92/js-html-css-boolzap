@@ -284,11 +284,11 @@ main header .header-icons i {
 #conversation-window {
   height: 100%;
   overflow-y: scroll;
+  background-image: url(../img/mine.jpg);
 }
 
 .balloons {
   height: 100%;
-  background-image: url(../img/mine.jpg);
   padding: 30px 50px 10px 50px;
   display: flex;
   flex-direction: column;

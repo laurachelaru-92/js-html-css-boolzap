@@ -20,9 +20,6 @@ function showActive(contact) {
   contact.addClass("active");
   var contattoAttivo = $("#contacts-container .contact.active");
   $("#main-header-text h4").text(contattoAttivo.find(".contact-name").text());
-  // L'ultimo accesso in main header è quello del contatto attivo
-  var accessoAttivo = contattoAttivo.find(".last-message-time").text();
-  $("#main-header-text #last-access").text("Ultimo accesso alle " + accessoAttivo);
   // La foto profilo è quella del contatto attivo
   var immagineProfilo = contattoAttivo.find("img").attr("src");
   $("main header img").attr("src",immagineProfilo);
@@ -33,6 +30,12 @@ function showActive(contact) {
   chatAttiva.addClass("active");
   // Rimuoviamo le chat degli altri contatti
   $("#conversation-window .balloons").not(chatAttiva).addClass("d-none");
+  // L'ultimo accesso in main header è quello del contatto attivo
+  var ultimoAccesso = chatAttiva.find(".pos-rel:last-of-type .balloon-time").text();
+  $("#main-header-text #last-access").text("Ultimo accesso alle " + ultimoAccesso);
+  // Facciamo scorrere la finestra di conversazione al fondo
+  var altezzaChat = $(".balloons.active").prop("scrollHeight");
+  $("#conversation-window").scrollTop(altezzaChat);
 }
 
 // NUOVO MESSAGGIO //
@@ -89,16 +92,22 @@ function newGreenBalloon() {
   if(messaggio != "") {
     // Appendiamo il messaggio nel paragrafo del balloon verde
     balloonVerde.children("p").text(messaggio);
-    // Appendiamo il messaggio anche nella finestra a sinistra
-    $("#contacts-container .contact.active").find(".last-message").text(messaggio);
-    // Segniamo l'ora attuale nello span apposito
+    // Segniamo l'ora attuale nel balloon verde
     var d = new Date();
     balloonVerde.find(".balloon-time").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
     // Appendiamo il balloon nella finestra di conversazione
-    $("#conversation-window .balloons.active").append(balloonVerde);
+    var contattoAttivo = $("#contacts-container .contact.active");
+    var datoAttivo = contattoAttivo.attr("data-contact");
+    var chatAttiva = $("#conversation-window .balloons[data-chat="+datoAttivo+"]");
+    chatAttiva.append(balloonVerde);
+    // Appendiamo il messaggio anche nella finestra a sinistra
+    $("#contacts-container .contact.active").find(".last-message").text(messaggio);
     // Puliamo il valore di input
     $("#typing-container input").val("");
   }
+  // Facciamo scorrere la finestra di conversazione al fondo
+  var altezzaChat = $(".balloons.active").prop("scrollHeight");
+  $("#conversation-window").scrollTop(altezzaChat);
 }
 
 // RISPOSTA //
@@ -109,12 +118,22 @@ function staScrivendo() {
 
 // Creiamo la funzione che genera un nuovo balloon bianco
 function risposta() {
+  // Prendiamo il template del balloon bianco e vi scriviamo "ok"
   var balloonBianco = $(".template-white .white-balloon").clone();
   balloonBianco.children("p").text("ok");
-  $("#contacts-container .contact.active").find(".last-message").text("ok");
+  // Scriviamo l'ora attuale nel balloon
   var d = new Date();
   balloonBianco.find(".balloon-time").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
-  $("#conversation-window .balloons.active").append(balloonBianco);
+  // Appendiamo il balloon nella chat attiva
+  var contattoAttivo = $("#contacts-container .contact.active");
+  var datoAttivo = contattoAttivo.attr("data-contact");
+  var chatAttiva = $("#conversation-window .balloons[data-chat="+datoAttivo+"]");
+  chatAttiva.append(balloonBianco);
+  // Scriviamo sulla finistra come ("ultimo messaggio")
+  contattoAttivo.find(".last-message").text("ok");
+  // Facciamo scorrere la finestra di conversazione al fondo
+  var altezzaChat = $(".balloons.active").prop("scrollHeight");
+  $("#conversation-window").scrollTop(altezzaChat);
 }
 
 // Funzione per ore e minuti minori di 10
