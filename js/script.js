@@ -9,9 +9,9 @@ $("#contacts-container .contact").each(
     var datoAttivo = $(this).attr("data-contact");
     var chatAttiva = $("#conversation-window .balloons[data-chat="+datoAttivo+"]");
     var ultimoMessaggio = chatAttiva.find(".pos-rel:last-of-type p").text();
+    $(this).find(".last-message").text(ultimoMessaggio);
     var ultimoAccesso = chatAttiva.find(".pos-rel:last-of-type .balloon-time").text();
     $(this).find(".last-message-time").text(ultimoAccesso);
-    $(this).find(".last-message").text(ultimoMessaggio);
   }
 );
 
@@ -39,7 +39,7 @@ function showActive(contact) {
 }
 
 // NUOVO MESSAGGIO //
-// Al focus sull'input, sparisce il microphono e appare l'aeroplanino
+// Al focus sull'input, sparisce il microfono e appare l'aeroplanino
 $("#typing-container input").focus(
   function() {
     $(".send i.fa-paper-plane").removeClass("d-none");
@@ -80,11 +80,11 @@ $("#typing-container").keypress(
       // Segniamo l'ultimo accesso nell'header
       setTimeout(ultimoAccesso, 1800);
     }
-  })
+  });
 
 // Creiamo la funzione che crea un nuovo balloon verde
 function newGreenBalloon() {
-  // Cloniamo il templace con balloon verde
+  // Cloniamo il template con balloon verde
   var balloonVerde = $(".template-green .green-balloon").clone();
   // Mettiamo il contenuto dell'input in una variabile
   var messaggio = $("#typing-container input").val();
@@ -155,10 +155,10 @@ function ultimoAccesso() {
 // Al click su un figlio di "contacts-container", cambia il contenuto della Finestra
 $("#contacts-container .contact").click(
   function() {
-    // Viene visualizzato come attivo il contatto cliccato
-    $("#contacts-container .contact").removeClass("active");
-    $("#conversation-window .balloons").removeClass("active");
-    showActive($(this));
+// Viene visualizzato come attivo il contatto cliccato
+$("#contacts-container .contact").removeClass("active");
+$("#conversation-window .balloons").removeClass("active");
+showActive($(this));
   }
 );
 
@@ -215,16 +215,34 @@ $("#search input").keyup(
 // Al click sulla freccia del messaggio, questo mostra il menu e al click su "cancella messaggio" lo cancella
 $(document).on("click", ".white-balloon .fa-chevron-down, .green-balloon .fa-chevron-down",
 function() {
-  var menuMessaggio = $(this).parent("span").children("ul");
+  var menuMessaggio = $(this).siblings("ul");
   menuMessaggio.toggleClass("d-none");
   $(menuMessaggio).children(".delete").click(
     function() {
       $(this).parents(".pos-rel").remove();
+      // Rivedere qual è il testo dell'ultimo messaggio e scriverlo nell'aside
+      var ultimoMessaggio = $("#conversation-window .balloons.active").find(".pos-rel:last-of-type p").text();
+      $("#contacts-container .contact.active").find(".last-message").text(ultimoMessaggio);
     }
   );
+  // Far sparire il menuMessaggio al mouseleave
+  $(".white-balloon ul, .green-balloon ul").mouseleave(
+    function() {
+      $(this).addClass("d-none");
+    }
+  );
+
 }
 );
 
+// Far sparire il menuMessaggio al click su qualsiasi altra parte del documento
+$("body").click(
+  function(e) {
+    if(e.target.id != ".fa-chevron-down") {
+      $(".white-balloon ul, .green-balloon ul").addClass("d-none");
+    }
+  }
+);
 
 
 });
