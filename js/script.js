@@ -1,7 +1,10 @@
 $(document).ready(function(){
 
+// Stabiliamo chi è il contatto attivo
+var contattoAttivo = $("#contacts-container .contact:first-child");
+
 // Al caricamento della pagina, è attivo il primo contatto della nostra lista
-showActive($("#contacts-container .contact:first-child"));
+showActive(contattoAttivo);
 
 // Nella parte sinistra, sotto il nome del contatto, appare il testo dell'ultimo messaggio
 $("#contacts-container .contact").each(
@@ -17,26 +20,39 @@ $("#contacts-container .contact").each(
 
 // Definiamo una funzione che mostra in pagina il contatto attivo
 function showActive(contact) {
+  // Diamo al contato attivo la classe active (per background grigio scuro)
   contact.addClass("active");
-  var contattoAttivo = $("#contacts-container .contact.active");
-  $("#main-header-text h4").text(contattoAttivo.find(".contact-name").text());
+  // Togliamo a tutti gli altri contatti la classe active
+  $("#contacts-container .contact").not(contact).removeClass("active");
+  $("#main-header-text h4").text(contact.find(".contact-name").text());
   // La foto profilo è quella del contatto attivo
-  var immagineProfilo = contattoAttivo.find("img").attr("src");
+  var immagineProfilo = contact.find("img").attr("src");
   $("main header img").attr("src",immagineProfilo);
   // Il contatto attivo è quello la cui conversazione è visibile
-  var datoAttivo = contattoAttivo.attr("data-contact");
+  var datoAttivo = contact.attr("data-contact");
   var chatAttiva = $("#conversation-window .balloons[data-chat="+datoAttivo+"]");
   chatAttiva.removeClass("d-none");
   chatAttiva.addClass("active");
+  // chatAttiva.addClass("active");
   // Rimuoviamo le chat degli altri contatti
   $("#conversation-window .balloons").not(chatAttiva).addClass("d-none");
   // L'ultimo accesso in main header è quello del contatto attivo
-  var ultimoAccesso = chatAttiva.find(".pos-rel:last-of-type .balloon-time").text();
-  $("#main-header-text #last-access").text("Ultimo accesso alle " + ultimoAccesso);
+  var lastMessageTime = chatAttiva.find(".pos-rel:last-of-type .balloon-time").text();
+  $("#main-header-text #last-access").text("Ultimo accesso alle " + lastMessageTime);
   // Facciamo scorrere la finestra di conversazione al fondo
-  var altezzaChat = $(".balloons.active").prop("scrollHeight");
+  var altezzaChat = chatAttiva.prop("scrollHeight");
   $("#conversation-window").scrollTop(altezzaChat);
 }
+
+// CAMBIO CONTATTO
+// Al click su un contatto, cambia il contatto attivo e il contenuto in finestra
+$("#contacts-container .contact").click(
+  function() {
+    contattoAttivo = $(this);
+    // Viene visualizzato come attivo il contatto cliccato
+    showActive($(this));
+  }
+);
 
 // NUOVO MESSAGGIO //
 // Al focus sull'input, sparisce il microfono e appare l'aeroplanino
@@ -57,33 +73,35 @@ $("#typing-container input").focusout(
 // Al click su "send"...
 $("#typing-container .send").click(
   function() {
+    var contatto = contattoAttivo;
     // Viene richiamata la funzione newGreenBalloon
-    newGreenBalloon();
+    newGreenBalloon(contatto);
     // Dopo un secondo, il testo nel header diventa "sta scrivendo..."
-    setTimeout(staScrivendo,800);
+    setTimeout(function(){staScrivendo(contatto)},800);
     // Dopo un secondo, inviamo la risposta
-    setTimeout(risposta, 1500);
+    setTimeout(function(){risposta(contatto)},1500);
     // Segniamo l'ultimo accesso nell'header
-    setTimeout(ultimoAccesso, 1800);
+    setTimeout(function(){ultimoAccesso(contatto)} ,1800);
   });
 
 // Al tasto "invio" viene richiamata la funzione newGreenBalloon
 $("#typing-container").keypress(
   function(event) {
     if(event.which == 13) {
+      var contatto = contattoAttivo;
       // Viene richiamata la funzione newGreenBalloon
-      newGreenBalloon();
+      newGreenBalloon(contatto);
       // Dopo un secondo, il testo nel header diventa "sta scrivendo..."
-      setTimeout(staScrivendo,800);
+      setTimeout(function(){staScrivendo(contatto)},800);
       // Dopo un secondo, inviamo la risposta
-      setTimeout(risposta, 1500);
+      setTimeout(function(){risposta(contatto)},1500);
       // Segniamo l'ultimo accesso nell'header
-      setTimeout(ultimoAccesso, 1800);
+      setTimeout(function(){ultimoAccesso(contatto)},1800);
     }
   });
 
 // Creiamo la funzione che crea un nuovo balloon verde
-function newGreenBalloon() {
+function newGreenBalloon(contact) {
   // Cloniamo il template con balloon verde
   var balloonVerde = $(".template-green .green-balloon").clone();
   // Mettiamo il contenuto dell'input in una variabile
@@ -93,74 +111,75 @@ function newGreenBalloon() {
     // Appendiamo il messaggio nel paragrafo del balloon verde
     balloonVerde.children("p").text(messaggio);
     // Segniamo l'ora attuale nel balloon verde
-    var d = new Date();
-    balloonVerde.find(".balloon-time").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
+    balloonVerde.find(".balloon-time").text(currentTime());
     // Appendiamo il balloon nella finestra di conversazione
-    var contattoAttivo = $("#contacts-container .contact.active");
-    var datoAttivo = contattoAttivo.attr("data-contact");
+    var datoAttivo = contact.attr("data-contact");
     var chatAttiva = $("#conversation-window .balloons[data-chat="+datoAttivo+"]");
     chatAttiva.append(balloonVerde);
     // Appendiamo il messaggio anche nella finestra a sinistra
-    $("#contacts-container .contact.active").find(".last-message").text(messaggio);
+    contact.find(".last-message").text(messaggio);
     // Puliamo il valore di input
     $("#typing-container input").val("");
+    // Scrolliamo al fondo
+    var altezzaChat = chatAttiva.prop("scrollHeight");
+    $("#conversation-window").scrollTop(altezzaChat);
   }
-  // Facciamo scorrere la finestra di conversazione al fondo
-  var altezzaChat = $(".balloons.active").prop("scrollHeight");
-  $("#conversation-window").scrollTop(altezzaChat);
 }
 
-// RISPOSTA //
-// Creiamo la funzione che indica che l'altra persona sta scrivendo
-function staScrivendo() {
-  $("main header #last-access").text("sta scrivendo...");
+// Creiamo la funzione che indica che l'altra persona sta scrivendo...
+function staScrivendo(contact) {
+  // ...solo se nel frattempo non è cambiato il contatto attivo
+  if($("#main-header-text h4") == contact.find(".contact-name")) {
+    $("#main-header-text #last-access").text("sta scrivendo...");
+  }
 }
 
 // Creiamo la funzione che genera un nuovo balloon bianco
-function risposta() {
+function risposta(contact) {
   // Prendiamo il template del balloon bianco e vi scriviamo "ok"
   var balloonBianco = $(".template-white .white-balloon").clone();
   balloonBianco.children("p").text("ok");
   // Scriviamo l'ora attuale nel balloon
-  var d = new Date();
-  balloonBianco.find(".balloon-time").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
+  balloonBianco.find(".balloon-time").text(currentTime());
   // Appendiamo il balloon nella chat attiva
-  var contattoAttivo = $("#contacts-container .contact.active");
-  var datoAttivo = contattoAttivo.attr("data-contact");
+  var datoAttivo = contact.attr("data-contact");
   var chatAttiva = $("#conversation-window .balloons[data-chat="+datoAttivo+"]");
+  // Scriviamolo sulla sinistra come ("ultimo messaggio")
+  contact.find(".last-message").text("ok");
+  // Appendiamo il messaggio in chat
   chatAttiva.append(balloonBianco);
-  // Scriviamo sulla finistra come ("ultimo messaggio")
-  contattoAttivo.find(".last-message").text("ok");
-  // Facciamo scorrere la finestra di conversazione al fondo
-  var altezzaChat = $(".balloons.active").prop("scrollHeight");
+  // Scrolliamo al fondo
+  var altezzaChat = chatAttiva.prop("scrollHeight");
   $("#conversation-window").scrollTop(altezzaChat);
 }
 
-// Funzione per ore e minuti minori di 10
-function addZero(i) {
-  if (i < 10) {
-    i = "0" + i;
+// Funzione per l'ora attuale
+function currentTime() {
+  // Funzione per ore e minuti minori di 10
+  function addZero(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    return i;
   }
-  return i;
+  var d = new Date();
+  var hours = d.getHours();
+  var minutes = d.getMinutes();
+  var time = addZero(hours) + ":" + addZero(minutes);
+  return time;
 }
 
 // Creiamo la funzione che cambia il testo nell'header in "ultimo accesso"
-function ultimoAccesso() {
-  var d = new Date();
-  $("main header #last-access").text("Ultimo accesso alle " + addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
-  $("#contacts-container .contact.active .last-message-time").text(addZero(d.getHours()) + ":" + addZero(d.getMinutes()));
+function ultimoAccesso(contact) {
+  // Occorre stabilire di nuovo l'attributo "data-contact" e il relativo "data-chat"
+  var datoAttivo = contattoAttivo.attr("data-contact");
+  var chatAttiva = $("#conversation-window .balloons[data-chat="+datoAttivo+"]");
+  // Prendiamo l'orario dell'ultimo messaggio inviato, che per noi sarà come l'ultimo accesso
+  var lastMessageTime = chatAttiva.find(".pos-rel:last-of-type .balloon-time").text();
+  // Appendiamo l'orario nell'header e nella finestra di sinistra corrispondente al contatto attivo
+  $("main header #last-access").text("Ultimo accesso alle " + lastMessageTime);
+  contact.find(".last-message-time").text(currentTime());
 }
-
-// CAMBIO CONTATTO
-// Al click su un figlio di "contacts-container", cambia il contenuto della Finestra
-$("#contacts-container .contact").click(
-  function() {
-// Viene visualizzato come attivo il contatto cliccato
-$("#contacts-container .contact").removeClass("active");
-$("#conversation-window .balloons").removeClass("active");
-showActive($(this));
-  }
-);
 
 
 // CERCA TRA I CONTATTI //
@@ -172,7 +191,6 @@ $("#contacts-container > .contact").each(
     arrayContatti.push(contatto.toLowerCase());
   }
 );
-console.log(arrayContatti);
 
 // Definiamo una funzione che "riordina" in base a un input
 function sortare(arrayGenerico,inputGenerico) {
@@ -193,7 +211,6 @@ $("#search input").keyup(
     var searchValue = $("#search input").val().toLowerCase();
     // Viene creato un array dei contatti che contengono l'input
     var arrayContattiTrovati = sortare(arrayContatti,searchValue);
-    console.log(arrayContattiTrovati);
     // Iteriamo nel nostro contenitore di contatti
     $("#contacts-container .contact").each(
       function() {

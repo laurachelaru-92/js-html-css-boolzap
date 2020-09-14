@@ -288,7 +288,8 @@ main header .header-icons i {
 }
 
 .balloons {
-  height: 100%;
+  height: auto;
+  min-height: 100%;
   padding: 30px 50px 10px 50px;
   display: flex;
   flex-direction: column;
@@ -306,8 +307,9 @@ main header .header-icons i {
   height: auto;
   margin-bottom: 10px;
   border-radius: 7px;
-  word-break: break-all;
-  text-overflow: ellipsis;
+  hyphens: auto;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .white-balloon {
@@ -391,6 +393,7 @@ main header .header-icons i {
   padding: 12px 10px;
   border-radius: 7px;
   border: none;
+  outline: none;
 }
 
 #typing-container input:focus {
