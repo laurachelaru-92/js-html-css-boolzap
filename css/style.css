@@ -307,9 +307,6 @@ main header .header-icons i {
   height: auto;
   margin-bottom: 10px;
   border-radius: 7px;
-  hyphens: auto;
-  overflow-x: hidden;
-  overflow-y: visible;
 }
 
 .white-balloon {
@@ -320,6 +317,14 @@ main header .header-icons i {
 .green-balloon {
   background-color: lightgreen;
   align-self: flex-end;
+}
+
+.white-balloon p,
+.green-balloon p {
+  hyphens: auto;
+  overflow-x: hidden;
+  overflow-y: visible;
+
 }
 
 #conversation-window .balloon-time {

@@ -129,7 +129,7 @@ function newGreenBalloon(contact) {
 // Creiamo la funzione che indica che l'altra persona sta scrivendo...
 function staScrivendo(contact) {
   // ...solo se nel frattempo non è cambiato il contatto attivo
-  if($("#main-header-text h4") == contact.find(".contact-name")) {
+  if($("#main-header-text h4").text() == contact.find(".contact-name").text()) {
     $("#main-header-text #last-access").text("sta scrivendo...");
   }
 }
@@ -229,26 +229,28 @@ $("#search input").keyup(
 
 
 // ELIMINARE UN MESSAGGIO
-// Al click sulla freccia del messaggio, questo mostra il menu e al click su "cancella messaggio" lo cancella
+// Al click sulla freccia del messaggio, questo mostra il menu
 $(document).on("click", ".white-balloon .fa-chevron-down, .green-balloon .fa-chevron-down",
 function() {
   var menuMessaggio = $(this).siblings("ul");
   menuMessaggio.toggleClass("d-none");
-  $(menuMessaggio).children(".delete").click(
-    function() {
-      $(this).parents(".pos-rel").remove();
-      // Rivedere qual è il testo dell'ultimo messaggio e scriverlo nell'aside
-      var ultimoMessaggio = $("#conversation-window .balloons.active").find(".pos-rel:last-of-type p").text();
-      $("#contacts-container .contact.active").find(".last-message").text(ultimoMessaggio);
-    }
-  );
   // Far sparire il menuMessaggio al mouseleave
   $(".white-balloon ul, .green-balloon ul").mouseleave(
     function() {
       $(this).addClass("d-none");
     }
   );
+}
+);
 
+var ultimoMessaggio = $(".balloons.active").find(".pos-rel:last-of-type p").text();
+// Al click su "cancella messaggio" lo cancella e rivede qual è l'ultimo messaggio
+$(document).on("click", ".white-balloon .delete, .green-balloon .delete",
+function(){
+  $(this).parents(".pos-rel").remove();
+  // Rivedere qual è il testo dell'ultimo messaggio e scriverlo nell'aside
+  ultimoMessaggio = $(".balloons.active").find(".pos-rel:last-of-type p").text();
+  $("#contacts-container .contact.active").find(".last-message").text(ultimoMessaggio);
 }
 );
 
